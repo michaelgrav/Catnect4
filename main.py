@@ -1,18 +1,30 @@
 import numpy as np
 import pygame
 
+ROW_COUNT = 6
+COLUMN_COUNT = 7
+
 def create_board():
-    board = np.zeros((6,7));
+    # Makes a new board
+    board = np.zeros((ROW_COUNT, COLUMN_COUNT))
     return board
+
 
 def drop_piece():
     pass
 
-def is_valid_location(board, col):
-    pass
 
-def get_next_open_row():
-    pass
+def is_valid_location(board, col):
+    # Checks the top ROW to see if that number is filled
+    return board[5][col] == 0
+
+
+def get_next_open_row(board, col):
+    for r in range(ROW_COUNT):
+        if board[r][col] == 0:
+            return r
+
+
 
 board = create_board()
 print(board)
@@ -24,7 +36,6 @@ while not game_over:
     # User inputs the column they want to drop in
     if turn == 0:
         col = int(input("Player 1 Make your Selection (0-6): "))
-
 
     # Ask for Player 2 input
     else:
