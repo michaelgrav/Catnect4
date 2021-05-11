@@ -18,3 +18,5 @@ while not game_over:
         print(type(selection))
 
     # Ask for Player 2 input
+    else:
+        selection = int(input("Player 2 Make your Selection (0-6): "))
