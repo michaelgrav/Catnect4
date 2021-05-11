@@ -20,7 +20,7 @@ def drop_piece(board, row, col, piece):
 
 def is_valid_location(board, col):
     # Checks the top ROW to see if that number is filled
-    return board[5][col] == 0
+    return board[ROW_COUNT - 1][col] == 0
 
 
 def get_next_open_row(board, col):
@@ -34,8 +34,22 @@ def print_board(board):
 
 
 def winning_move(board, piece):
-    pass
+    # Check horizontal locations (minus three because you can't finish the four in a row past col 3)
+    for c in range(COLUMN_COUNT - 3):
+        for r in range(ROW_COUNT):
+            if board[r][c] == piece and board[r][c + 1] == piece and board[r][c + 2] == piece and board[r][c + 3] == piece:
+                return True
 
+    # Check vertical locations for win
+    for c in range(COLUMN_COUNT):
+        for r in range(ROW_COUNT - 3):
+            if board[r][c] == piece and board[r + 1][c] == piece and board[r + 2][c] == piece and board[r + 3][c] == piece:
+                return True
+
+    # Check postive slope diagonal
+
+
+    # Check negatively sloped diagonal
 
 board = create_board()
 print(board)
@@ -51,6 +65,10 @@ while not game_over:
         if is_valid_location(board, col):
             row = get_next_open_row(board, col)
             drop_piece(board, row, col, 1)
+            
+            if winning_move(board, 1):
+                print("PLAYER 1 Wins!")
+                game_over = True
 
     # Ask for Player 2 input
     else:
