@@ -10,8 +10,8 @@ def create_board():
     return board
 
 
-def drop_piece():
-    pass
+def drop_piece(board, row, col, piece):
+    board[row][col] = piece
 
 
 def is_valid_location(board, col):
@@ -37,9 +37,19 @@ while not game_over:
     if turn == 0:
         col = int(input("Player 1 Make your Selection (0-6): "))
 
+        if is_valid_location(board, col):
+            row = get_next_open_row(board, col)
+            drop_piece(board, row, col, 1)
+
     # Ask for Player 2 input
     else:
         col = int(input("Player 2 Make your Selection (0-6): "))
+
+        if is_valid_location(board, col):
+            row = get_next_open_row(board, col)
+            drop_piece(board, row, col, 2)
+
+    print(board)
 
     # Makes sure the turn is properly updated to switch back and forth
     turn += 1
