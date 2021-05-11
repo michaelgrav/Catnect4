@@ -1,8 +1,12 @@
+# 16:10
+# https://www.youtube.com/watch?v=XpYz-q1lxu8
+
 import numpy as np
 import pygame
 
 ROW_COUNT = 6
 COLUMN_COUNT = 7
+
 
 def create_board():
     # Makes a new board
@@ -24,6 +28,13 @@ def get_next_open_row(board, col):
         if board[r][col] == 0:
             return r
 
+
+def print_board(board):
+    print(np.flip(board, 0))
+
+
+def winning_move(board, piece):
+    pass
 
 
 board = create_board()
@@ -49,7 +60,7 @@ while not game_over:
             row = get_next_open_row(board, col)
             drop_piece(board, row, col, 2)
 
-    print(board)
+    print_board(board)
 
     # Makes sure the turn is properly updated to switch back and forth
     turn += 1
