@@ -4,9 +4,12 @@
 import numpy as np
 import pygame
 import sys
+import math
 
 BLUE = (0, 0, 255)
 BLACK = (0, 0, 0)
+RED = (255, 0, 0)
+YELLOW = (255, 255, 0)
 
 ROW_COUNT = 6
 COLUMN_COUNT = 7
@@ -77,7 +80,21 @@ def draw_board(board):
                 screen, BLACK,
                 (int(c * SQUARESIZE + SQUARESIZE / 2),
                     int(r * SQUARESIZE + SQUARESIZE + SQUARESIZE / 2)), RADIUS)
-
+    
+    for c in range(COLUMN_COUNT):
+        for r in range(ROW_COUNT):
+            if board[r][c] == 1:
+                pygame.draw.circle(
+                screen, RED,
+                (int(c * SQUARESIZE + SQUARESIZE / 2),
+                    height - int(r * SQUARESIZE + SQUARESIZE / 2)), RADIUS)
+            elif board[r][c] == 2:
+                pygame.draw.circle(
+                screen, YELLOW,
+                (int(c * SQUARESIZE + SQUARESIZE / 2),
+                    height - int(r * SQUARESIZE + SQUARESIZE / 2)), RADIUS)
+    
+    pygame.display.update()
 
 board = create_board()
 print(board)
@@ -100,15 +117,29 @@ pygame.display.update()
 
 while not game_over:
     for event in pygame.event.get():
+        # Quit game
         if event.type == pygame.QUIT:
             sys.exit()
 
-        if event.type == pygame.MOUSEBUTTONDOWN:
-            continue
-            # Ask for Player 1 input
-            # User inputs the column they want to drop in
+        # This draws the circle at the top
+        if event.type == pygame.MOUSEMOTION:
+            # This is so the circles don't "smear" across the top
+            pygame.draw.rect(screen, BLACK, (0, 0, width, SQUARESIZE))
+            posx = event.pos[0]
             if turn == 0:
-                col = int(input("Player 1 Make your Selection (0-6): "))
+                pygame.draw.circle(screen, RED, (posx, int(SQUARESIZE/2)), RADIUS)
+            else: 
+                pygame.draw.circle(screen, YELLOW, (posx, int(SQUARESIZE/2)), RADIUS)
+
+        pygame.display.update()
+
+        # If the mouse is clicked, drop the piece
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            print(event.pos)
+            # Ask for Player 1 input
+            if turn == 0:
+                posx = event.pos[0]
+                col = int(math.floor(posx/SQUARESIZE))
 
                 if is_valid_location(board, col):
                     row = get_next_open_row(board, col)
@@ -120,7 +151,8 @@ while not game_over:
 
             # Ask for Player 2 input
             else:
-                col = int(input("Player 2 Make your Selection (0-6): "))
+                posx = event.pos[0]
+                col = int(math.floor(posx/SQUARESIZE))
 
                 if is_valid_location(board, col):
                     row = get_next_open_row(board, col)
@@ -131,6 +163,7 @@ while not game_over:
                         game_over = True
 
             print_board(board)
+            draw_board(board)
 
             # Makes sure the turn is properly updated to switch back and forth
             turn += 1
