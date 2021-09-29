@@ -1,6 +1,3 @@
-# 40:19
-# https://www.youtube.com/watch?v=XpYz-q1lxu8
-
 import numpy as np
 import pygame
 import sys
